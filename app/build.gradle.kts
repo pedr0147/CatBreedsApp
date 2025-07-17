@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+
 android {
     namespace = "com.example.catbreedsapp"
     compileSdk = 36
@@ -13,13 +14,17 @@ android {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
 
-
+    buildFeatures{
+        buildConfig=true
+    }
     defaultConfig {
         applicationId = "com.example.catbreedsapp"
         minSdk = 25
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
+        val catApiKey: String? = project.findProperty("THE_CAT_API_KEY") as String?
+        buildConfigField("String", "THE_CAT_API_KEY", "\"${catApiKey ?: ""}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -93,7 +98,14 @@ dependencies {
 // Unit Testing
     testImplementation(libs.junit)
 
-    //kotlin Json Adapter Factory
+//kotlin Json Adapter Factory
+    implementation("com.squareup.moshi:moshi:1.15.1")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
+
+
+//Gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
 
 }
