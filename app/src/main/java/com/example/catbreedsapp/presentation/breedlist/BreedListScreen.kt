@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.catbreedsapp.data.model.Breed
@@ -22,7 +21,7 @@ import com.example.catbreedsapp.data.model.Breed
 @Composable
 fun BreedListScreen(
     viewModel: BreedListViewModel,
-    onBreedClick: (Breed) -> Unit // Navegação futura
+    onBreedClick: (Breed) -> Unit
 ) {
     val breeds by viewModel.filteredBreeds.collectAsState()
     val search by viewModel.searchQuery.collectAsState()
@@ -44,7 +43,7 @@ fun BreedListScreen(
             items(breeds) { breed ->
                 BreedItem(
                     breed = breed,
-                    isFavourite = viewModel.isFavourite(breed.id),
+                    isFavourite = viewModel.isFavouriteComposable(breed.id),
                     onToggleFavourite = { viewModel.toggleFavourite(breed) },
                     onClick = { onBreedClick(breed) }
                 )
@@ -71,7 +70,7 @@ fun BreedItem(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val painter = rememberAsyncImagePainter(breed.image?.url)
+            val painter = rememberAsyncImagePainter({breed.url ?: ""})
             Image(
                 painter = painter,
                 contentDescription = "Cat Image",
@@ -83,13 +82,13 @@ fun BreedItem(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = breed.name, style = MaterialTheme.typography.titleMedium)
-                Text(text = "Origem: ${breed.origin ?: "?"}", style = MaterialTheme.typography.bodySmall)
+                Text(text = "Origin: ${breed.origin ?: "?"}", style = MaterialTheme.typography.bodySmall)
             }
 
             IconButton(onClick = onToggleFavourite) {
                 Icon(
                     imageVector = if (isFavourite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                    contentDescription = "Favorito",
+                    contentDescription = "Favorite",
                     tint = if (isFavourite) Color.Red else Color.Gray
                 )
             }

@@ -1,9 +1,10 @@
 package com.example.catbreedsapp.presentation.breedlist
 
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.catbreedsapp.data.db.FavouriteBreed
 import com.example.catbreedsapp.data.model.Breed
 import com.example.catbreedsapp.data.repository.CatRepository
@@ -59,25 +60,30 @@ class BreedListViewModel(
 
     fun toggleFavourite(breed: Breed){
         viewModelScope.launch{
-            viewModelScope.launch{
+
                 val isFav = _favourites.value.any { it.breedId == breed.id }
                 if (isFav) {
+                    println("Removing ${breed.name}")
                     repository.removeFavourite(breed.id)
                 } else {
+                    println("Adding ${breed.name} to favourites")
                     repository.addFavourite(
                         FavouriteBreed(
                             breedId = breed.id,
                             name = breed.name,
-                            imageUrl = breed.image?.url ?: "",
+                            imageUrl = breed.url ?: "",
                             lifeSpan = breed.life_span ?: "Unknown"
                         )
                     )
                 }
-            }
+
         }
     }
 
-    fun isFavourite(breedId: String): Boolean {
-        return _favourites.value.any { it.breedId == breedId }
+    @Composable
+    fun isFavouriteComposable(breedId: String): Boolean {
+        val favourites by _favourites.collectAsState()
+        return favourites.any { it.breedId == breedId }
     }
+
 }

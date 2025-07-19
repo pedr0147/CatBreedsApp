@@ -40,7 +40,7 @@ fun AppNavGraph(
 
             BreedDetailScreen(
                 breed = breed,
-                isFavorite = viewModel.isFavourite(breed.id),
+                isFavorite = viewModel.isFavouriteComposable(breed.id),
                 onToggleFavorite = { viewModel.toggleFavourite(it) }
             )
         }

@@ -39,7 +39,7 @@ fun AppEntryPoint() {
             context,
             AppDatabase::class.java,
             "cat_breeds_db"
-        ).fallbackToDestructiveMigration(true)
+        ).fallbackToDestructiveMigration(false)
             .build()
     }
 
