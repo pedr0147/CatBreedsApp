@@ -1,6 +1,9 @@
 package com.example.catbreedsapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,16 +13,19 @@ import com.example.catbreedsapp.data.model.Breed
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.catbreedsapp.presentation.breedlist.BreedListViewModel
+import com.example.catbreedsapp.presentation.favourites.FavouritesScreen
 import com.google.gson.Gson
 
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
-    viewModel: BreedListViewModel // <- Adicionado aqui
+    viewModel: BreedListViewModel,
+    modifier: Modifier = Modifier
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.BreedList.route
+        startDestination = Screen.BreedList.route,
+        modifier = modifier
     ) {
         composable(route = Screen.BreedList.route) {
             BreedListScreen(
@@ -43,6 +49,10 @@ fun AppNavGraph(
                 isFavorite = viewModel.isFavouriteComposable(breed.id),
                 onToggleFavorite = { viewModel.toggleFavourite(it) }
             )
+        }
+        composable(route = Screen.Favourites.route) {
+            val favourites by viewModel.favourites.collectAsState()
+            FavouritesScreen(favourites = favourites)
         }
     }
 }

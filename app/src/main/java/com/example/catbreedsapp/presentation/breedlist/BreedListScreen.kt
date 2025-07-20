@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.catbreedsapp.data.model.Breed
@@ -25,6 +26,14 @@ fun BreedListScreen(
 ) {
     val breeds by viewModel.filteredBreeds.collectAsState()
     val search by viewModel.searchQuery.collectAsState()
+    Text(
+        text = "Cat Breed App",
+        style = MaterialTheme.typography.titleLarge,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    )
 
     Column(modifier = Modifier.fillMaxSize()) {
         OutlinedTextField(
@@ -33,7 +42,8 @@ fun BreedListScreen(
             label = { Text("Search Breed") },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(5.dp)
+                .padding(0.dp,40.dp,0.dp)
         )
 
         LazyColumn(
@@ -70,7 +80,7 @@ fun BreedItem(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val painter = rememberAsyncImagePainter({breed.url ?: ""})
+            val painter = rememberAsyncImagePainter(breed.imageUrl)
             Image(
                 painter = painter,
                 contentDescription = "Cat Image",

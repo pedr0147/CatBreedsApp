@@ -3,9 +3,11 @@ package com.example.catbreedsapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
@@ -14,6 +16,7 @@ import com.example.catbreedsapp.data.db.AppDatabase
 import com.example.catbreedsapp.data.repository.CatRepository
 import com.example.catbreedsapp.presentation.breedlist.BreedListViewModel
 import com.example.catbreedsapp.presentation.navigation.AppNavGraph
+import com.example.catbreedsapp.presentation.navigation.BottomNavigationBar
 import com.example.catbreedsapp.ui.theme.CatBreedsAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -53,8 +56,15 @@ fun AppEntryPoint() {
 
     val navController = rememberNavController()
 
-    AppNavGraph(
-        navController = navController,
-        viewModel = viewModel
-    )
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(navController = navController)
+        }
+    ) { innerPadding ->
+        AppNavGraph(
+            navController = navController,
+            viewModel = viewModel,
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
 }

@@ -27,12 +27,12 @@ fun BreedDetailScreen(breed: Breed, isFavorite: Boolean, onToggleFavorite: (Bree
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(breed.url)
+                .data(breed.imageUrl )
                 .crossfade(true)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
                 .build(),
             contentDescription = breed.name,
-            placeholder = painterResource(id = R.drawable.placeholder),
-            error = painterResource(id = R.drawable.placeholder),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(250.dp)
@@ -42,7 +42,10 @@ fun BreedDetailScreen(breed: Breed, isFavorite: Boolean, onToggleFavorite: (Bree
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(
                 text = breed.name,
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
