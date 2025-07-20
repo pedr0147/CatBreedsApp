@@ -3,6 +3,7 @@ package com.example.catbreedsapp.presentation.breedlist
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catbreedsapp.data.db.FavouriteBreed
@@ -22,11 +23,13 @@ class BreedListViewModel(
     private val _breeds = MutableStateFlow<List<Breed>>(emptyList())
     val breeds: StateFlow<List<Breed>> = _breeds
 
+
     private val _favourites = repository.getFavourites().stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
         emptyList()
     )
+    val favourites: StateFlow<List<FavouriteBreed>> = _favourites
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
@@ -71,7 +74,7 @@ class BreedListViewModel(
                         FavouriteBreed(
                             breedId = breed.id,
                             name = breed.name,
-                            imageUrl = breed.url ?: "",
+                            imageUrl = breed.imageUrl ?: "",
                             lifeSpan = breed.life_span ?: "Unknown"
                         )
                     )
