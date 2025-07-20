@@ -15,6 +15,9 @@ import androidx.navigation.navArgument
 import com.example.catbreedsapp.presentation.breedlist.BreedListViewModel
 import com.example.catbreedsapp.presentation.favourites.FavouritesScreen
 import com.google.gson.Gson
+import java.net.URLEncoder
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun AppNavGraph(
@@ -27,21 +30,40 @@ fun AppNavGraph(
         startDestination = Screen.BreedList.route,
         modifier = modifier
     ) {
+        // 🐱 Lista de raças
         composable(route = Screen.BreedList.route) {
             BreedListScreen(
                 viewModel = viewModel,
                 onBreedClick = { breed ->
                     val breedJson = Gson().toJson(breed)
-                    navController.navigate("${Screen.BreedDetail.route}/$breedJson")
+                    val encoded = URLEncoder.encode(breedJson, StandardCharsets.UTF_8.toString())
+                    navController.navigate("${Screen.BreedDetail.route}/$encoded")
                 }
             )
         }
 
+        // ⭐ Favoritos
+        composable(route = Screen.Favourites.route) {
+            val favourites by viewModel.favourites.collectAsState()
+            FavouritesScreen(
+                favourites = favourites,
+                onBreedClick = { breed ->
+                    val breedJson = Gson().toJson(breed)
+                    val encoded = URLEncoder.encode(breedJson, StandardCharsets.UTF_8.toString())
+                    navController.navigate("${Screen.BreedDetail.route}/$encoded")
+                },
+                isFavourite = { viewModel.isFavourite(it) },
+                onToggleFavourite = { viewModel.toggleFavourite(it) }
+            )
+        }
+
+        // 📄 Detalhes
         composable(
             route = "${Screen.BreedDetail.route}/{breed}",
             arguments = listOf(navArgument("breed") { type = NavType.StringType })
         ) { backStackEntry ->
-            val breedJson = backStackEntry.arguments?.getString("breed")
+            val encodedJson = backStackEntry.arguments?.getString("breed")
+            val breedJson = URLDecoder.decode(encodedJson, StandardCharsets.UTF_8.toString())
             val breed = Gson().fromJson(breedJson, Breed::class.java)
 
             BreedDetailScreen(
@@ -50,10 +72,5 @@ fun AppNavGraph(
                 onToggleFavorite = { viewModel.toggleFavourite(it) }
             )
         }
-        composable(route = Screen.Favourites.route) {
-            val favourites by viewModel.favourites.collectAsState()
-            FavouritesScreen(favourites = favourites)
-        }
     }
 }
-

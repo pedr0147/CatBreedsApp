@@ -1,9 +1,7 @@
 package com.example.catbreedsapp.data.model
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-
-@JsonClass(generateAdapter = true)
-data class Image(val url: String)
 
 @JsonClass(generateAdapter = true)
 data class Breed(
@@ -12,9 +10,9 @@ data class Breed(
     val origin: String?,
     val temperament: String?,
     val description: String?,
-    val reference_image_id: String?, // novo campo
+    @Json(name = "reference_image_id") val referenceImageId: String?,
     val life_span: String?
 ) {
     val imageUrl: String?
-        get() = reference_image_id?.let { "https://cdn2.thecatapi.com/images/$it.jpg" }
+        get() = referenceImageId?.let { "https://cdn2.thecatapi.com/images/$it.jpg" }
 }
