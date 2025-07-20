@@ -3,7 +3,6 @@ package com.example.catbreedsapp.presentation.breedlist
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catbreedsapp.data.db.FavouriteBreed
