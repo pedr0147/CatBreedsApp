@@ -23,6 +23,6 @@ An Android application built with Kotlin and Jetpack Compose that allows users t
 
 ## 🚀 Getting Started
 
-1. Clone this repository:
+Clone this repository:
    ```bash
    git clone https://github.com/pedr0147/CatBreedsApp.git
