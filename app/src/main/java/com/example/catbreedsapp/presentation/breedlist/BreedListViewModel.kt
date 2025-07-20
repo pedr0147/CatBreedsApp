@@ -73,8 +73,11 @@ class BreedListViewModel(
                         FavouriteBreed(
                             breedId = breed.id,
                             name = breed.name,
-                            imageUrl = breed.imageUrl ?: "",
-                            lifeSpan = breed.life_span ?: "Unknown"
+                            imageUrl = breed.referenceImageId ?: "",
+                            lifeSpan = breed.life_span ?: "Unknown",
+                            origin = breed.origin ?: "Unknown",
+                            temperament = breed.temperament ?: "Unknown",
+                            description = breed.description ?: "No description available"
                         )
                     )
                 }
@@ -87,5 +90,9 @@ class BreedListViewModel(
         val favourites by _favourites.collectAsState()
         return favourites.any { it.breedId == breedId }
     }
+    fun isFavourite(id: String): Boolean {
+        return _favourites.value.any { it.breedId == id }
+    }
+
 
 }

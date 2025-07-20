@@ -43,7 +43,7 @@ fun BreedListScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp)
-                .padding(0.dp,40.dp,0.dp)
+                .padding(0.dp, 40.dp, 0.dp)
         )
 
         LazyColumn(
